@@ -13,7 +13,7 @@ package funsets
  * whether the given integer belongs to a set, the characteristic function of the set. For example, we can characterize
  * the set of negative integers by the characteristic function (x: Int) => x < 0.
  */
-object FunSets2 {
+object FunSets {
   /**
    * We represent a set by its characteristic function, i.e.
    * its `contains` predicate.
