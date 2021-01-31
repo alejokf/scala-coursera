@@ -1,9 +1,7 @@
 package funsets
 
-import org.scalatest.FunSuite
-
-
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 
 /**
@@ -29,10 +27,10 @@ class FunSetSuite extends FunSuite {
   /**
    * Tests are written using the "test" operator and the "assert" method.
    */
-  // test("string take") {
-  //   val message = "hello, world"
-  //   assert(message.take(5) == "hello")
-  // }
+  test("string take") {
+    val message = "hello, world"
+    assert(message.take(5) == "hello")
+  }
 
   /**
    * For ScalaTest tests, there exists a special equality operator "===" that
@@ -43,9 +41,9 @@ class FunSetSuite extends FunSuite {
    * Try it out! Change the values so that the assertion fails, and look at the
    * error message.
    */
-  // test("adding ints") {
-  //   assert(1 + 2 === 3)
-  // }
+  test("adding ints") {
+    assert(1 + 2 === 3)
+  }
 
 
   import FunSets._
@@ -77,6 +75,12 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s4 = singletonSet(4)
+    val s5 = singletonSet(5)
+    val s6 = singletonSet(6)
+    val s7 = singletonSet(7)
+    val s8 = singletonSet(8)
+    val s999 = singletonSet(999)
   }
 
   /**
@@ -107,6 +111,49 @@ class FunSetSuite extends FunSuite {
       assert(contains(s, 1), "Union 1")
       assert(contains(s, 2), "Union 2")
       assert(!contains(s, 3), "Union 3")
+    }
+  }
+
+  test("forall: {1,2,3,4}") {
+    new TestSets {
+      val s = union(s1, s2)
+      val r = union(s, s3)
+      assert(forall(r, (x: Int) => x < 5), "All elements in the set are strictly less than 5.")
+    }
+  }
+
+  test("exists: given {1,2,3,4}") {
+    new TestSets {
+      val s = union(s1, s2)
+      val r = union(s, s3)
+      val t = union(r, s4)
+      assert(exists(t, s2), "2 should exist in the given set")
+    }
+
+  }
+
+  test("exists & filter: even and 3") {
+    new TestSets {
+      val evensAnd3 = (x: Int) => (x % 2 == 0) || x == 3
+      val odds = (x: Int) => (x % 2 == 1) || (x % 2 == -1)
+      assert(exists(evensAnd3, odds), "The set of all even numbers and 3 should contain an odd element, namely 3.")
+    }
+
+  }
+
+  test("1 maps to 2") {
+    new TestSets {
+      val f = (x: Int) => x + x
+      val m = map(s1, f)
+      assert(contains(m, 2), "s1 returns true if it contains 2")
+    }
+  }
+
+  test("forall & map: doubling numbers") {
+    new TestSets {
+      val even = (x: Int) => x % 2 == 0
+      val all = (x: Int) => true
+      assert(forall(map(all, (x: Int) => x * 2), even), "The set obtained by doubling all numbers should contain only even numbers.")
     }
   }
 
