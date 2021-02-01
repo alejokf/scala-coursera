@@ -1,5 +1,8 @@
 package recfun
 
+/**
+ * 1. Recursion
+ */
 object Main {
   def main(args: Array[String]) {
     println("Pascal's Triangle")
