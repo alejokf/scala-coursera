@@ -10,7 +10,7 @@ class TweetSetSuite extends FunSuite {
   trait TestSets {
     val set1 = new Empty
     val set2 = set1.incl(new Tweet("a", "a body", 20))
-    val set3 = set2.incl(new Tweet("b", "b body", 20))
+    val set3 = set2.incl(new Tweet("b", "b body", 30))
     val c = new Tweet("c", "c body", 7)
     val d = new Tweet("d", "d body", 9)
     val set4c = set3.incl(c)
@@ -40,7 +40,7 @@ class TweetSetSuite extends FunSuite {
 
   test("filter: 20 on set5") {
     new TestSets {
-      assert(size(set5.filter(tw => tw.retweets == 20)) === 2)
+      assert(size(set5.filter(tw => tw.retweets == 20)) === 1)
     }
   }
 
@@ -69,5 +69,29 @@ class TweetSetSuite extends FunSuite {
       assert(trends.head.user == "a" || trends.head.user == "b")
     }
   }
+
+  test("most retweeted: 30") {
+    new TestSets {
+      val mostRetweeted: Tweet = set5.mostRetweeted
+      assert(mostRetweeted.text.equals("b body") && mostRetweeted.retweets == 30)
+    }
+  }
+
+  test("Descending by retweet: first 30, second 20") {
+    new TestSets {
+      TweetReader.allTweets.foreach(println)
+
+      val descendingByRetweet = set5.descendingByRetweet
+      assert(descendingByRetweet.head.retweets == 30)
+      assert(descendingByRetweet.tail.head.retweets == 20)
+    }
+  }
+
+  /* There seems to be an issue with TweetReader.allTweets
+  test("filter and trending: tweets with 321 and 205 retweets") {
+    new TestSets {
+      assert(size(TweetReader.allTweets.filter(tw => tw.retweets == 321 || tw.retweets == 205)) === 2)
+    }
+  }*/
 
 }
