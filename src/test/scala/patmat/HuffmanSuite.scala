@@ -50,4 +50,45 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+  //-------------------------------------
+
+  test("times(List('a', 'b', 'a'))") {
+    assert(times(List('a', 'b', 'a')) === List(('a', 2), ('b', 1)))
+  }
+
+  test("singleton") {
+    assert(singleton(List(Leaf('e', 1))))
+  }
+
+  test("not singleton") {
+    assert(!singleton(List(Leaf('e', 1), Leaf('f', 1))))
+  }
+
+  test("combine of a singleton or nil") {
+    val leaflist = List(Leaf('e', 1))
+    assert(combine(leaflist) === leaflist)
+  }
+
+  test("encode and decode using a Huffman Tree") {
+    val text = "huffmanestcool"
+    val myCodeTree = Huffman.createCodeTree(Huffman.string2Chars(text))
+    val myEncodedText = Huffman.encode(myCodeTree)(Huffman.string2Chars(text))
+    assert(Huffman.decode(myCodeTree, myEncodedText) == Huffman.string2Chars(text))
+  }
+
+  test("encode and decode using a Coding Table") {
+    val text = "huffmanestcool"
+    val myCodeTree = Huffman.createCodeTree(Huffman.string2Chars(text))
+    val myEncodedText = Huffman.quickEncode(myCodeTree)(Huffman.string2Chars(text))
+    assert(Huffman.decode(myCodeTree, myEncodedText) == Huffman.string2Chars(text))
+  }
+
+  test("encoding using a Huffman Tree equals encoding using a Coding Table") {
+    val text = "huffmanestcool"
+    val myCodeTree = Huffman.createCodeTree(Huffman.string2Chars(text))
+    val encodedHuffman = Huffman.encode(myCodeTree)(Huffman.string2Chars(text))
+    val encodedCodingTable = Huffman.quickEncode(myCodeTree)(Huffman.string2Chars(text))
+    assert(encodedHuffman === encodedCodingTable)
+  }
+
 }
