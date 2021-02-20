@@ -34,9 +34,7 @@ object Anagrams {
    * Note: you must use `groupBy` to implement this method!
    */
   def wordOccurrences(w: Word): Occurrences =
-  //TODO: check if the sorted is really needed
     w.toLowerCase.groupBy(identity).map { case (k, v) => (k, v.length) }.toList.sorted
-
   //Also: w.toLowerCase.groupMapReduce(identity)(_ => 1)(_ * _).toList.sorted
 
   /** Converts a sentence into its character occurrence list. */
@@ -91,7 +89,7 @@ object Anagrams {
       for {
         (char, number) <- occurrences
         i <- 1 to number
-        rest <- combinations(occurrences filter (pair => pair._1 > char)) //TODO: check if > can be replaced with !=
+        rest <- combinations(occurrences filter (pair => pair._1 > char))
       } yield List((char, i)) ++ rest)
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
