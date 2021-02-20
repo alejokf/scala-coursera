@@ -44,6 +44,14 @@ class AnagramsSuite extends FunSuite {
   }
 
 
+  test("subtract: abcccdd - cd") {
+    val abcccdd = List(('a', 1), ('b', 1), ('c', 3), ('d', 2))
+    val cd = List(('c', 1), ('d', 1))
+    val abccd = List(('a', 1), ('b', 1), ('c', 2), ('d', 1))
+    assert(subtract(abcccdd, cd) === abccd)
+  }
+
+
   test("combinations: []") {
     assert(combinations(Nil) === List(Nil))
   }
@@ -93,6 +101,21 @@ class AnagramsSuite extends FunSuite {
       List("Zulu", "nil", "Rex"),
       List("rulez", "Linux"),
       List("Linux", "rulez")
+    )
+    assert(sentenceAnagrams(sentence).toSet === anas.toSet)
+  }
+
+  test("sentence anagrams: I love you") {
+    val sentence = List("I", "love", "you")
+    val anas = List(
+      List("Io", "you", "Lev"),
+      List("Io", "Lev", "you"),
+      List("you", "Io", "Lev"),
+      List("olive", "you"),
+      List("Lev", "you", "Io"),
+      List("you", "olive"),
+      List("you", "Lev", "Io"),
+      List("Lev", "Io", "you")
     )
     assert(sentenceAnagrams(sentence).toSet === anas.toSet)
   }
