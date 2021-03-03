@@ -37,20 +37,23 @@ trait StringParserTerrain extends GameDef {
    * in `levelVector`. The vector contains parsed version of the `level`
    * string. For example, the following level
    *
-   *   val level =
-   *     """ST
-   *       |oo
-   *       |oo""".stripMargin
+   * val level =
+   * """ST
+   * |oo
+   * |oo""".stripMargin
    *
    * is represented as
    *
-   *   Vector(Vector('S', 'T'), Vector('o', 'o'), Vector('o', 'o'))
+   * Vector(Vector('S', 'T'), Vector('o', 'o'), Vector('o', 'o'))
    *
    * The resulting function should return `true` if the position `pos` is
    * a valid position (not a '-' character) inside the terrain described
    * by `levelVector`.
    */
-  def terrainFunction(levelVector: Vector[Vector[Char]]): Pos => Boolean = ???
+  def terrainFunction(levelVector: Vector[Vector[Char]]): Pos => Boolean = (p: Pos) =>
+    p.x >= 0 && p.y >= 0 &&
+      p.x < levelVector.size && levelVector.forall(p.y < _.size) &&
+      levelVector(p.x)(p.y) != '-'
 
   /**
    * This function should return the position of character `c` in the
@@ -59,8 +62,16 @@ trait StringParserTerrain extends GameDef {
    *
    * Hint: you can use the functions `indexWhere` and / or `indexOf` of the
    * `Vector` class
+   *
+   * We use case (y, x) because the coordinates are inverted in the initial solution scaffolding (x for vertical axis
+   * and y for horizontal axis)
    */
-  def findChar(c: Char, levelVector: Vector[Vector[Char]]): Pos = ???
+  def findChar(c: Char, levelVector: Vector[Vector[Char]]): Pos = {
+    levelVector.zipWithIndex
+      .map { case (row, x) => (row.indexOf(c), x) }
+      .find { case (y, x) => x > 0 && y > 0 }
+      .fold(Pos(-1, -1)) { case (y, x) => Pos(x, y) }
+  }
 
   private lazy val vector: Vector[Vector[Char]] =
     Vector(level.split("\n").map(str => Vector(str: _*)): _*)
